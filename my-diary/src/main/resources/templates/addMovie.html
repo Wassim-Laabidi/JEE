@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Add Movie</title>
+    <title>Add/Edit Movie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
@@ -12,7 +12,7 @@
 
 <body>
 <div class="container my-5">
-    <h3> Add Movie</h3>
+    <h3> Add/Edit Movie</h3>
     <div class="card">
         <div class="card-body">
             <div class="col-md-10">
@@ -22,7 +22,7 @@
                         <div class="form-group col-md-8">
                             <label for="id" class="col-form-label">ID</label>
                             <input type="text" th:field="*{id}" class="form-control"
-                                   id="id" placeholder="id" />
+                                   id="id" placeholder="id" th:value="${movie.id}" readonly="readonly"/>
                         </div>
                         <div class="form-group col-md-8">
                             <label for="name" class="col-form-label">Name</label>
@@ -30,7 +30,7 @@
                                    id="name" placeholder="Name" />
                         </div>
                         <div class="form-group col-md-8">
-                            <label for="score" class="col-form-label">score</label>
+                            <label for="score" class="col-form-label">Score</label>
                             <input type="text" th:field="*{score}" class="form-control"
                                    id="score" placeholder="Score" />
                         </div>

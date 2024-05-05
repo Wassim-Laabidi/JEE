@@ -1,4 +1,4 @@
-package com.example.mydiary.model.controller;
+package com.example.mydiary.controller;
 
 import com.example.mydiary.model.Movie;
 import com.example.mydiary.repository.MovieRepository;
@@ -11,6 +11,8 @@ import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
 import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Controller
@@ -34,23 +36,26 @@ public class MovieController {
 
 
     @GetMapping(path = {"/edit","/edit/{id}"})
-    public String createUpdateMovieById(Model model, @PathVariable("id") Optional<Long> id){
-        if(id.isPresent()){
-            Mono<Movie> movie = movieRepository.findById(id.get());
-            log.info(" $$$$$ CREATE/UPDATED by ID Movie :: {}",movie);
-            model.addAttribute("movie",movie);
-        }else {
-            model.addAttribute("movie",new Movie());
-        }
-        return "addMovie";
+    public Mono<String> createUpdateMovieById(Model model, @PathVariable("id") Optional<Long> id){
+        return id.map(movieRepository::findById)
+                .orElseGet(() -> Mono.just(new Movie()))
+                .doOnNext(movie -> log.info(" $$$$$ CREATE/UPDATED by ID Movie :: {}", movie))
+                .doOnNext(movie -> model.addAttribute("movie", movie))
+                .thenReturn("addMovie");
     }
+
+
 
     @PostMapping(value = "/create")
     public String createMovie(Movie movie){
-        log.info(" ::::: CREATE/ UPDATE  ::::: {}",movie);
+        log.info(" ::::: CREATE/ UPDATE  ::::: {}", movie);
+        if(movie.getId() == null){
+            movie.setId(convertLocalDateTimeToLong(LocalDateTime.now()));
+        }
         movieRepository.save(movie).subscribe();
         return "redirect:/";
     }
+
 
     @GetMapping(path="/delete/{id}")
     public String deleteMovie(Model model, @PathVariable("id") Long id){
@@ -59,5 +64,9 @@ public class MovieController {
         return "redirect:/";
     }
 
-
+    private Long convertLocalDateTimeToLong(LocalDateTime localDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
+        String formattedDateTime = localDateTime.format(formatter);
+        return Long.parseLong(formattedDateTime);
+    }
 }
