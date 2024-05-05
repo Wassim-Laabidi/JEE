@@ -27,6 +27,7 @@
                                 <th>ID</th>
                                 <th>Title</th>
                                 <th>Rating out of 10</th>
+                                <th>Date</th>
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
@@ -36,6 +37,7 @@
                                 <td th:text="${movie.id}"></td>
                                 <td th:text="${movie.name}"></td>
                                 <td th:text="${movie.score}"></td>
+                                <td th:text="${movie.date}"></td>
                                 <td>
                                     <a th:href="@{/edit/{id}(id=${movie.id})}"
                                        class="btn btn-primary">

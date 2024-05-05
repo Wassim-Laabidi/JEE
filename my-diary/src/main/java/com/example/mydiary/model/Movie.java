@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -19,5 +20,7 @@ public class Movie {
     private Long id;
     private String name;
     private Double score;
+    private Date date;
+
 
 }
